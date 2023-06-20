@@ -95,6 +95,8 @@
     "use-draggable-scroll": "^0.1.0",
     "use-resize-observer": "^9.1.0",
     "video.js": "^7.21.1",
+    "youtube-metadata-from-url": "^1.0.3",
+    "youtubei.js": "latest",
     "zod": "^3.20.2",
     "zustand": "^3.7.2"
   },

@@ -30,7 +30,7 @@ import { OwnerHandle, Size } from './NftWidget.styles'
 
 type NftHistoryProps = { size: Size; width: number; historyItems: NftHistoryEntry[] }
 export const NftHistory: FC<NftHistoryProps> = ({ size, width, historyItems }) => {
-  const [isOpen, toggleIsOpen] = useToggle()
+  const [isOpen, toggleIsOpen] = useToggle(true)
 
   return (
     <>

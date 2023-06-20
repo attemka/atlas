@@ -4,12 +4,14 @@ import { CSSTransition, SwitchTransition } from 'react-transition-group'
 import { useBasicChannel } from '@/api/hooks/channel'
 import { BasicChannelFieldsFragment } from '@/api/queries/__generated__/fragments.generated'
 import { AvatarSize } from '@/components/Avatar'
+import { NumberFormat } from '@/components/NumberFormat'
 import { Text, TextVariant } from '@/components/Text'
 import { SkeletonLoader } from '@/components/_loaders/SkeletonLoader'
 import { absoluteRoutes } from '@/config/routes'
 import { useHandleFollowChannel } from '@/hooks/useHandleFollowChannel'
 import { transitions } from '@/styles'
 import { SentryLogger } from '@/utils/logs'
+import { formatNumber } from '@/utils/number'
 
 import { Container, FollowButton, StyledAvatar, StyledLink, TitleWrapper } from './ChannelLink.styles'
 
@@ -89,7 +91,13 @@ export const ChannelLink: FC<ChannelLinkProps> = ({
                   </Text>
                   {followButton && (
                     <Text as="p" variant="t100" color="colorText" margin={{ top: 1 }}>
-                      {displayedChannel.channel.followsNum}{' '}
+                      <NumberFormat
+                        as="span"
+                        format="short"
+                        variant="t100"
+                        color={'colorText'}
+                        value={displayedChannel.channel.followsNum}
+                      />{' '}
                       {displayedChannel.channel.followsNum === 1 ? 'follower' : 'followers'}
                     </Text>
                   )}

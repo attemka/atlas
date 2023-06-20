@@ -1,35 +1,26 @@
 import styled from '@emotion/styled'
-import { ErrorBoundary } from '@sentry/react'
-import { FC } from 'react'
-import { Route, Routes, useLocation, useNavigate } from 'react-router-dom'
-import { CSSTransition, SwitchTransition } from 'react-transition-group'
+import {FC, ReactNode} from 'react'
+import {useLocation, useNavigate} from 'react-router-dom'
+import {BottomNav} from '@/components/_navigation/BottomNav'
+import {SidenavViewer} from '@/components/_navigation/SidenavViewer'
+import {TopbarViewer} from '@/components/_navigation/TopbarViewer'
+import {atlasConfig} from '@/config'
+import {absoluteRoutes, relativeRoutes} from '@/config/routes'
+import {useMediaMatch} from '@/hooks/useMediaMatch'
+import {useSearchStore} from '@/providers/search'
+import {useUser} from '@/providers/user/user.hooks'
+import {RoutingState} from '@/types/routing'
+import {YppLandingView} from '@/views/global/YppLandingView'
 
-import { ViewErrorBoundary } from '@/components/ViewErrorFallback'
-import { BottomNav } from '@/components/_navigation/BottomNav'
-import { PrivateRoute } from '@/components/_navigation/PrivateRoute'
-import { SidenavViewer } from '@/components/_navigation/SidenavViewer'
-import { TopbarViewer } from '@/components/_navigation/TopbarViewer'
-import { atlasConfig } from '@/config'
-import { absoluteRoutes, relativeRoutes } from '@/config/routes'
-import { useMediaMatch } from '@/hooks/useMediaMatch'
-import { useSearchStore } from '@/providers/search'
-import { useUser } from '@/providers/user/user.hooks'
-import { transitions } from '@/styles'
-import { RoutingState } from '@/types/routing'
-import { YppLandingView } from '@/views/global/YppLandingView'
-import { NotificationsView } from '@/views/notifications'
-
-import { CategoryView } from './CategoryView'
-import { ChannelView } from './ChannelView'
-import { ChannelsView } from './ChannelsView'
-import { DiscoverView } from './DiscoverView'
-import { EditMembershipView } from './EditMembershipView'
-import { HomeView } from './HomeView'
-import { MarketplaceView } from './MarketplaceView'
-import { MemberView } from './MemberView'
-import { NotFoundView } from './NotFoundView'
-import { SearchView } from './SearchView'
-import { VideoView } from './VideoView'
+import {CategoryView} from './CategoryView'
+import {ChannelView} from './ChannelView'
+import {ChannelsView} from './ChannelsView'
+import {DiscoverView} from './DiscoverView'
+import {HomeView} from './HomeView'
+import {MarketplaceView} from './MarketplaceView'
+import {MemberView} from './MemberView'
+import {SearchView} from './SearchView'
+import {VideoView} from './VideoView'
 
 const viewerRoutes = [
   { path: relativeRoutes.viewer.search(), element: <SearchView /> },
@@ -48,7 +39,7 @@ const viewerRoutes = [
 
 const ENTRY_POINT_ROUTE = absoluteRoutes.viewer.index()
 
-export const ViewerLayout: FC = () => {
+export const ViewerLayout: FC<{ children?: ReactNode }> = ({ children }) => {
   const location = useLocation()
   const locationState = location.state as RoutingState
   const { isLoggedIn } = useUser()
@@ -62,41 +53,7 @@ export const ViewerLayout: FC = () => {
     <>
       <TopbarViewer />
       <SidenavViewer />
-      <MainContainer>
-        <ErrorBoundary
-          fallback={ViewErrorBoundary}
-          onReset={() => {
-            navigate(absoluteRoutes.viewer.index())
-          }}
-        >
-          <SwitchTransition>
-            <CSSTransition
-              timeout={parseInt(transitions.timings.routing)}
-              classNames={transitions.names.fadeAndSlide}
-              key={displayedLocation.pathname}
-            >
-              <Routes location={displayedLocation}>
-                {viewerRoutes.map((route) => (
-                  <Route key={route.path} {...route} />
-                ))}
-                <Route
-                  path={relativeRoutes.viewer.editMembership()}
-                  element={
-                    <PrivateRoute isAuth={isLoggedIn} element={<EditMembershipView />} redirectTo={ENTRY_POINT_ROUTE} />
-                  }
-                />
-                <Route
-                  path={absoluteRoutes.viewer.notifications()}
-                  element={
-                    <PrivateRoute isAuth={isLoggedIn} element={<NotificationsView />} redirectTo={ENTRY_POINT_ROUTE} />
-                  }
-                />
-                <Route path="*" element={<NotFoundView />} />
-              </Routes>
-            </CSSTransition>
-          </SwitchTransition>
-        </ErrorBoundary>
-      </MainContainer>
+      <MainContainer>{children}</MainContainer>
       {!mdMatch && !searchOpen && <BottomNav />}
     </>
   )
