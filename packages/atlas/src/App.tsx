@@ -55,7 +55,7 @@ export const App = () => {
           // now serialize the headers
           url.searchParams.set('__headers', JSON.stringify([...headers]))
 
-          // @ts-ignore
+          // @ts-ignore because
           input.duplex = 'half'
 
           // copy over the request
@@ -91,11 +91,11 @@ export const App = () => {
         <ViewerLayout>
           <VerticallyCenteredDiv style={{ height: '10%', justifyContent: 'center', marginTop: '24px' }}>
             <RowBox>
-              <Text variant={'h400'} as={'h2'}>
+              <Text variant="h400" as="h2">
                 Enter video id in the input below
               </Text>
               {error && (
-                <Text variant={'h200'} as={'h3'} color={'colorTextError'}>
+                <Text variant="h200" as="h3" color="colorTextError">
                   {error}
                 </Text>
               )}

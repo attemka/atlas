@@ -11,7 +11,6 @@ import { absoluteRoutes } from '@/config/routes'
 import { useHandleFollowChannel } from '@/hooks/useHandleFollowChannel'
 import { transitions } from '@/styles'
 import { SentryLogger } from '@/utils/logs'
-import { formatNumber } from '@/utils/number'
 
 import { Container, FollowButton, StyledAvatar, StyledLink, TitleWrapper } from './ChannelLink.styles'
 
@@ -95,7 +94,7 @@ export const ChannelLink: FC<ChannelLinkProps> = ({
                         as="span"
                         format="short"
                         variant="t100"
-                        color={'colorText'}
+                        color="colorText"
                         value={displayedChannel.channel.followsNum}
                       />{' '}
                       {displayedChannel.channel.followsNum === 1 ? 'follower' : 'followers'}
