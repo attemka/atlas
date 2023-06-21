@@ -44,7 +44,7 @@ export const App = () => {
           // transform the url for use with our proxy
           url.searchParams.set('__host', url.host)
           url.host = window.location.host
-          url.pathname = '/preview-proxy' + url.pathname
+          url.pathname = '/proxy-preview' + url.pathname
           url.protocol = 'http'
 
           const headers = init?.headers
