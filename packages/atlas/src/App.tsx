@@ -45,7 +45,7 @@ export const App = () => {
           url.searchParams.set('__host', url.host)
           url.host = window.location.host
           url.pathname = '/proxy-preview' + url.pathname
-          url.protocol = 'http'
+          url.protocol = 'https'
 
           const headers = init?.headers
             ? new Headers(init.headers)
