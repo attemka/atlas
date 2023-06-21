@@ -12,5 +12,5 @@ services:
     environment:
       - META_SERVER_HOSTNAME=atlas-meta-server
     ports:
-      - '80:80'
+      - '4400:80'
     restart: always

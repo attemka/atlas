@@ -17,6 +17,7 @@ import {
 // https://vitejs.dev/config/
 export default defineConfig({
   root: './src',
+  base: '/preview',
   build: {
     target: ['chrome87', 'edge88', 'es2020', 'firefox78', 'safari14'],
     emptyOutDir: true,
