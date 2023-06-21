@@ -13,6 +13,7 @@ function copyHeader(headerName: string, to: Headers, from: Headers) {
   }
 }
 app.all('*', async (req, res) => {
+  console.log('req:', req.url)
   // if options send do CORS preflight
   if (req.method === 'OPTIONS') {
     res
@@ -49,6 +50,8 @@ app.all('*', async (req, res) => {
 
     // console.log('URL:', url, "METHOD:", req.method, "headers:",request_headers, "BODY:", req.body )
     // console.log(request_headers, reqHeaders)
+
+    console.log('fetching:', url)
 
     // Make the request to YouTube
     const fetchRes = await fetch(url, {
@@ -99,5 +102,6 @@ app.all('*', async (req, res) => {
 const port = 4500
 
 app.listen(port, () => {
+  console.log('start')
   console.log(`Example app listening on port ${port}`)
 })

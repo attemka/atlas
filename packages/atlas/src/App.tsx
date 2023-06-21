@@ -43,9 +43,9 @@ export const App = () => {
 
           // transform the url for use with our proxy
           url.searchParams.set('__host', url.host)
-          url.host = window.location.host
-          url.pathname = '/proxy-preview' + url.pathname
-          url.protocol = 'https'
+          url.host = 'localhost:4500'
+          // url.pathname = '/proxy-preview' + url.pathname
+          url.protocol = 'http'
 
           const headers = init?.headers
             ? new Headers(init.headers)
@@ -88,27 +88,35 @@ export const App = () => {
     <JoystreamProvider>
       <CommonProviders>
         <ViewerLayout>
-          <VerticallyCenteredDiv
-            style={{ height: '10%', justifyContent: 'center', marginTop: '24px', pointerEvents: 'all' }}
-          >
-            <RowBox>
-              <Text variant="h400" as="h2">
-                Enter video id in the input below
-              </Text>
-              {error && (
-                <Text variant="h200" as="h3" color="colorTextError">
-                  {error}
+          {!metadata && (
+            <VerticallyCenteredDiv
+              style={{ height: '10%', justifyContent: 'center', marginTop: '24px', pointerEvents: 'all' }}
+            >
+              <RowBox>
+                <Text variant="h400" as="h2">
+                  Enter video id in the input below
                 </Text>
-              )}
-              <ColumnBox>
-                <Input value={inputValue} onChange={(e) => setInputValue(e.target.value)} />
-                <Button onClick={() => handleVid()}>Preview</Button>
-              </ColumnBox>
-            </RowBox>
-          </VerticallyCenteredDiv>
+                {error && (
+                  <Text variant="h200" as="h3" color="colorTextError">
+                    {error}
+                  </Text>
+                )}
+                <ColumnBox>
+                  <Input value={inputValue} onChange={(e) => setInputValue(e.target.value)} />
+                  <Button onClick={() => handleVid()}>Preview</Button>
+                </ColumnBox>
+              </RowBox>
+            </VerticallyCenteredDiv>
+          )}
           <div>
             {metadata && (
-              <div style={{ pointerEvents: 'none' }}>
+              <div
+                style={{ width: '100%', height: '100%', cursor: 'pointer', pointerEvents: 'all', zIndex: 1234567 }}
+                onClick={() => {
+                  setInputValue('')
+                  setMetadata(null)
+                }}
+              >
                 <PreviewVideoView
                   thumbnailUrl={metadata.basic_info.thumbnail?.[0].url}
                   avatarUrl={metadata.secondary_info?.owner?.author.thumbnails[0].url}
