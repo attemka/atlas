@@ -1,26 +1,27 @@
 import styled from '@emotion/styled'
-import {FC, ReactNode} from 'react'
-import {useLocation, useNavigate} from 'react-router-dom'
-import {BottomNav} from '@/components/_navigation/BottomNav'
-import {SidenavViewer} from '@/components/_navigation/SidenavViewer'
-import {TopbarViewer} from '@/components/_navigation/TopbarViewer'
-import {atlasConfig} from '@/config'
-import {absoluteRoutes, relativeRoutes} from '@/config/routes'
-import {useMediaMatch} from '@/hooks/useMediaMatch'
-import {useSearchStore} from '@/providers/search'
-import {useUser} from '@/providers/user/user.hooks'
-import {RoutingState} from '@/types/routing'
-import {YppLandingView} from '@/views/global/YppLandingView'
+import { FC, ReactNode } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 
-import {CategoryView} from './CategoryView'
-import {ChannelView} from './ChannelView'
-import {ChannelsView} from './ChannelsView'
-import {DiscoverView} from './DiscoverView'
-import {HomeView} from './HomeView'
-import {MarketplaceView} from './MarketplaceView'
-import {MemberView} from './MemberView'
-import {SearchView} from './SearchView'
-import {VideoView} from './VideoView'
+import { BottomNav } from '@/components/_navigation/BottomNav'
+import { SidenavViewer } from '@/components/_navigation/SidenavViewer'
+import { TopbarViewer } from '@/components/_navigation/TopbarViewer'
+import { atlasConfig } from '@/config'
+import { absoluteRoutes, relativeRoutes } from '@/config/routes'
+import { useMediaMatch } from '@/hooks/useMediaMatch'
+import { useSearchStore } from '@/providers/search'
+import { useUser } from '@/providers/user/user.hooks'
+import { RoutingState } from '@/types/routing'
+import { YppLandingView } from '@/views/global/YppLandingView'
+
+import { CategoryView } from './CategoryView'
+import { ChannelView } from './ChannelView'
+import { ChannelsView } from './ChannelsView'
+import { DiscoverView } from './DiscoverView'
+import { HomeView } from './HomeView'
+import { MarketplaceView } from './MarketplaceView'
+import { MemberView } from './MemberView'
+import { SearchView } from './SearchView'
+import { VideoView } from './VideoView'
 
 const viewerRoutes = [
   { path: relativeRoutes.viewer.search(), element: <SearchView /> },
@@ -50,12 +51,12 @@ export const ViewerLayout: FC<{ children?: ReactNode }> = ({ children }) => {
   const displayedLocation = locationState?.overlaidLocation || location
 
   return (
-    <>
+    <div style={{ pointerEvents: 'none' }}>
       <TopbarViewer />
       <SidenavViewer />
       <MainContainer>{children}</MainContainer>
       {!mdMatch && !searchOpen && <BottomNav />}
-    </>
+    </div>
   )
 }
 

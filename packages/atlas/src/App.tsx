@@ -43,7 +43,7 @@ export const App = () => {
 
           // transform the url for use with our proxy
           url.searchParams.set('__host', url.host)
-          url.host = 'localhost:8080'
+          url.host = window.location.host + '/preview-proxy'
           url.protocol = 'http'
 
           const headers = init?.headers
@@ -60,8 +60,6 @@ export const App = () => {
 
           // copy over the request
           const request = new Request(url, input instanceof Request ? input : undefined)
-
-          console.log(url)
 
           headers.delete('user-agent')
 
@@ -89,7 +87,9 @@ export const App = () => {
     <JoystreamProvider>
       <CommonProviders>
         <ViewerLayout>
-          <VerticallyCenteredDiv style={{ height: '10%', justifyContent: 'center', marginTop: '24px' }}>
+          <VerticallyCenteredDiv
+            style={{ height: '10%', justifyContent: 'center', marginTop: '24px', pointerEvents: 'all' }}
+          >
             <RowBox>
               <Text variant="h400" as="h2">
                 Enter video id in the input below

@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom'
 
 import { VideoDetailsPreview } from '@/VideoDetailsPreview'
 import {
+  BasicBidFieldsFragment,
   BasicChannelFieldsFragment,
   BasicMembershipFieldsFragment,
 } from '@/api/queries/__generated__/fragments.generated'
@@ -13,7 +14,7 @@ import { LimitedWidthContainer } from '@/components/LimitedWidthContainer'
 import { NumberFormat } from '@/components/NumberFormat'
 import { Button } from '@/components/_buttons/Button'
 import { ChannelLink } from '@/components/_channel/ChannelLink'
-import { NftWidget } from '@/components/_nft/NftWidget'
+import { Auction, NftWidget } from '@/components/_nft/NftWidget'
 import { NftHistoryEntry } from '@/components/_nft/NftWidget/NftHistory'
 import { ContextMenu } from '@/components/_overlays/ContextMenu'
 import { displayCategories } from '@/config/categories'
@@ -114,6 +115,81 @@ export const PreviewVideoView: FC<PreviewVideoViewProps> = ({
     },
   }
 
+  const commentsMock: any[] = [
+    {
+      '__typename': 'Comment',
+      'id': 'METAPROTOCOL-OLYMPIA-581536-2',
+      'isExcluded': false,
+      'author': {
+        '__typename': 'Membership',
+        'id': '4549',
+        'handle': 'paulkadotter',
+        'metadata': {
+          '__typename': 'MemberMetadata',
+          'avatar': {
+            '__typename': 'AvatarUri',
+            'avatarUri': 'https://atlas-services.joystream.org/avatars/8628dc66-1c8e-4c0f-8120-071e2614b730.webp',
+          },
+          'about': 'Web3 enthusiast, marketer, content creator\n\nhttps://twitter.com/paulkadotter',
+        },
+      },
+      'createdAt': '2023-01-19T07:19:18.000000Z',
+      'isEdited': false,
+      'reactionsCountByReactionId': null,
+      'parentComment': null,
+      'repliesCount': 0,
+      'text': 'Great to see you on the Gleev!',
+      'status': 'VISIBLE',
+    },
+    {
+      '__typename': 'Comment',
+      'id': 'METAPROTOCOL-OLYMPIA-623002-2',
+      'isExcluded': false,
+      'author': {
+        '__typename': 'Membership',
+        'id': '1905',
+        'handle': 'kate_fm',
+        'metadata': {
+          '__typename': 'MemberMetadata',
+          'avatar': {
+            '__typename': 'AvatarUri',
+            'avatarUri': 'https://atlas-services.joystream.org/avatars/migrated/1905.webp',
+          },
+          'about': 'discord (kate_fm#0169), Telegram (katerlna), github (katerina510)',
+        },
+      },
+      'createdAt': '2023-01-22T04:36:18.001000Z',
+      'isEdited': false,
+      'reactionsCountByReactionId': null,
+      'parentComment': null,
+      'repliesCount': 0,
+      'text': 'Interesting and detailed',
+      'status': 'VISIBLE',
+    },
+    {
+      '__typename': 'Comment',
+      'id': 'METAPROTOCOL-OLYMPIA-1004966-2',
+      'isExcluded': false,
+      'author': {
+        '__typename': 'Membership',
+        'id': '4694',
+        'handle': 'whosssappa',
+        'metadata': {
+          '__typename': 'MemberMetadata',
+          'avatar': null,
+          'about': 'I will posting a video about cryptocurrency',
+        },
+      },
+      'createdAt': '2023-02-17T17:58:00.000000Z',
+      'isEdited': false,
+      'reactionsCountByReactionId': null,
+      'parentComment': null,
+      'repliesCount': 0,
+      'text': 'cool',
+      'status': 'VISIBLE',
+    },
+  ]
+
   const bidUser2Mock: BasicMembershipFieldsFragment = {
     __typename: 'Membership',
     id: '1',
@@ -160,6 +236,41 @@ export const PreviewVideoView: FC<PreviewVideoViewProps> = ({
     },
   ]
 
+  const bidMock: BasicBidFieldsFragment = {
+    __typename: 'Bid',
+    amount: '123123123',
+    createdAt: new Date(),
+    isCanceled: false,
+    createdInBlock: 123,
+    id: '123',
+    bidder: bidUser1Mock,
+  }
+
+  const auctionMock: Auction = {
+    status: 'auction',
+    type: 'open',
+    startingPrice: new BN(180008000000000),
+    buyNowPrice: new BN(1500000000000000),
+    topBid: bidMock,
+    topBidAmount: new BN(629224000000000),
+    topBidderHandle: 'Henry',
+    topBidderAvatarUri: 'https://atlas-services.joystream.org/avatars/ee82f463-93b3-4e00-b6db-2f34163433fe.webp',
+    isUserTopBidder: false,
+    userBidAmount: undefined,
+    userBidUnlockDate: undefined,
+    canWithdrawBid: undefined,
+    canChangeBid: undefined,
+    hasTimersLoaded: true,
+    englishTimerState: undefined,
+    auctionPlannedEndDate: undefined,
+    startsAtDate: undefined,
+    plannedEndAtBlock: null,
+    startsAtBlock: null,
+    auctionBeginsInDays: 0,
+    auctionBeginsInSeconds: 0,
+    isUserWhitelisted: undefined,
+  }
+
   const mdMatch = useMediaMatch('md')
   const videoCategory = null
   const belongsToCategories = videoCategory
@@ -173,10 +284,7 @@ export const PreviewVideoView: FC<PreviewVideoViewProps> = ({
         ownerHandle={channelName}
         isOwner={true}
         nftHistory={nftHistoryMock}
-        nftStatus={{
-          status: 'buy-now',
-          buyNowPrice: new BN(629224000000000),
-        }}
+        nftStatus={auctionMock}
         needsSettling={false}
         bidFromPreviousAuction={undefined}
         saleType={null}
@@ -221,9 +329,9 @@ export const PreviewVideoView: FC<PreviewVideoViewProps> = ({
             onReact={(_) => new Promise<boolean>((resolve) => {})}
             fee={reactionFee}
             onCalculateFee={(_) => new Promise<void>((resolve) => {})}
-            state={'default'}
+            state="default"
             likes={numberOfLikes}
-            dislikes={Number(numberOfLikes) / 15}
+            dislikes={0}
           />
           <ButtonsContainer>
             <Button variant="tertiary" icon={<SvgActionShare />} onClick={() => {}}>
@@ -244,7 +352,7 @@ export const PreviewVideoView: FC<PreviewVideoViewProps> = ({
         </VideoUtils>
       </TitleContainer>
       <ChannelContainer>
-        <ChannelLink followButton id={''} overrideChannel={channelMock} textVariant="h300" avatarSize={40} />
+        <ChannelLink followButton id="" overrideChannel={channelMock} textVariant="h300" avatarSize={40} />
       </ChannelContainer>
       <VideoDetailsPreview description={videoDescription} categoryData={belongsToCategories} />
     </>
@@ -262,6 +370,7 @@ export const PreviewVideoView: FC<PreviewVideoViewProps> = ({
               <>
                 {detailsItems}
                 <CommentsSection
+                  comments={commentsMock}
                   video={null}
                   videoLoading={false}
                   disabled={undefined}
@@ -273,7 +382,7 @@ export const PreviewVideoView: FC<PreviewVideoViewProps> = ({
           {!isCinematic && sideItems}
         </PlayerWrapper>
       </PlayerGridWrapper>
-      <LimitedWidthContainer></LimitedWidthContainer>
+      <LimitedWidthContainer />
     </>
   )
 }

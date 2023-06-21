@@ -1,9 +1,8 @@
-import { NetworkStatus } from '@apollo/client'
 import { debounce } from 'lodash-es'
 import { FC, useEffect, useMemo, useRef, useState } from 'react'
 import { useParams } from 'react-router-dom'
 
-import { useComment, useCommentSectionComments, useUserCommentsReactions } from '@/api/hooks/comments'
+import { useComment, useUserCommentsReactions } from '@/api/hooks/comments'
 import { CommentOrderByInput } from '@/api/queries/__generated__/baseTypes.generated'
 import { FullVideoFieldsFragment } from '@/api/queries/__generated__/fragments.generated'
 import { EmptyFallback } from '@/components/EmptyFallback'
@@ -33,6 +32,7 @@ import {
 
 type CommentsSectionProps = {
   disabled?: boolean
+  comments?: any[]
   video?: FullVideoFieldsFragment | null
   videoLoading: boolean
   videoAuthorId?: string
@@ -42,7 +42,13 @@ type CommentsSectionProps = {
 const SCROLL_TO_COMMENT_TIMEOUT = 300
 const INITIAL_COMMENTS = 10
 
-export const CommentsSection: FC<CommentsSectionProps> = ({ disabled, video, videoLoading, onCommentInputFocus }) => {
+export const CommentsSection: FC<CommentsSectionProps> = ({
+  disabled,
+  video,
+  videoLoading,
+  onCommentInputFocus,
+  comments,
+}) => {
   const [commentInputText, setCommentInputText] = useState('')
   const [commentInputIsProcessing, setCommentInputIsProcessing] = useState(false)
   const [highlightedCommentId, setHighlightedCommentId] = useState<string | null>(null)
@@ -73,10 +79,10 @@ export const CommentsSection: FC<CommentsSectionProps> = ({ disabled, video, vid
   const commentSectionWrapperRef = useRef<HTMLDivElement>(null)
   const mobileCommentsOpen = commentsOpen || mdMatch
   const [numberOfComments, setNumberOfComments] = useState(mobileCommentsOpen ? INITIAL_COMMENTS : 1)
-  const { comments, loading, fetchMore, pageInfo, networkStatus } = useCommentSectionComments(
-    { ...queryVariables, first: mobileCommentsOpen ? INITIAL_COMMENTS : 1 },
-    { skip: disabled || !videoId, notifyOnNetworkStatusChange: true }
-  )
+  // const { comments, loading, fetchMore, pageInfo, networkStatus } = useCommentSectionComments(
+  //   { ...queryVariables, first: mobileCommentsOpen ? INITIAL_COMMENTS : 1 },
+  //   { skip: disabled || !videoId, notifyOnNetworkStatusChange: true }
+  // )
   const { userReactions } = useUserCommentsReactions(videoId, memberId)
 
   const { addComment } = useReactionTransactions()
@@ -94,8 +100,8 @@ export const CommentsSection: FC<CommentsSectionProps> = ({ disabled, video, vid
     }
   )
 
-  const commentsLoading = loading || commentFromUrlLoading || parentCommentFromUrlLoading || videoLoading
-  const isFetchingMore = networkStatus === NetworkStatus.fetchMore
+  const commentsLoading = false
+  const isFetchingMore = false
 
   const scrollToCommentInput = (smooth?: boolean) => {
     commentsSectionHeaderRef.current?.scrollIntoView({ behavior: smooth ? 'smooth' : 'auto', block: 'start' })
@@ -117,23 +123,13 @@ export const CommentsSection: FC<CommentsSectionProps> = ({ disabled, video, vid
     const scrollHandler = debounce(() => {
       if (!commentSectionWrapperRef.current) return
       const scrolledToBottom = document.documentElement.scrollTop >= commentSectionWrapperRef.current.scrollHeight
-      if (scrolledToBottom && pageInfo?.hasNextPage && !commentsLoading) {
-        setMoreComments()
-      }
     }, 100)
     window.addEventListener('scroll', scrollHandler)
 
     return () => {
       window.removeEventListener('scroll', scrollHandler)
     }
-  }, [commentsLoading, mobileCommentsOpen, pageInfo?.hasNextPage])
-
-  // fetch more results when user scrolls to end of page
-  useEffect(() => {
-    if (pageInfo && numberOfComments !== INITIAL_COMMENTS && comments?.length !== numberOfComments) {
-      fetchMore({ variables: { ...queryVariables, first: numberOfComments } })
-    }
-  }, [fetchMore, numberOfComments, pageInfo, queryVariables, comments?.length])
+  }, [commentsLoading, mobileCommentsOpen])
 
   const handleComment = async (parentCommentId?: string) => {
     if (!videoId || !commentInputText) {
@@ -209,7 +205,7 @@ export const CommentsSection: FC<CommentsSectionProps> = ({ disabled, video, vid
     <CommentsSectionWrapper>
       <CommentsSectionHeader ref={commentsSectionHeaderRef}>
         <Text as="p" variant="h400">
-          {loading || !video?.commentsCount ? 'Comments' : `${video.commentsCount} comments`}
+          3 comments
         </Text>
         <Select
           size="medium"
@@ -217,7 +213,7 @@ export const CommentsSection: FC<CommentsSectionProps> = ({ disabled, video, vid
           value={sortCommentsBy}
           items={COMMENTS_SORT_OPTIONS}
           onChange={handleSorting}
-          disabled={loading}
+          disabled={false}
         />
       </CommentsSectionHeader>
       <CommentInput
@@ -256,7 +252,7 @@ export const CommentsSection: FC<CommentsSectionProps> = ({ disabled, video, vid
         )}
         {commentsLoading && !isFetchingMore
           ? mappedPlaceholders
-          : filteredComments
+          : comments
               ?.map((comment) => (
                 <CommentThread
                   key={comment.id}
@@ -271,7 +267,7 @@ export const CommentsSection: FC<CommentsSectionProps> = ({ disabled, video, vid
               ))
               .concat(isFetchingMore && commentsLoading ? mappedPlaceholders : [])}
       </CommentWrapper>
-      {!mobileCommentsOpen && !commentsLoading && comments && !!comments.length && pageInfo?.hasNextPage && (
+      {!mobileCommentsOpen && !commentsLoading && comments && !!comments.length && (
         <LoadMoreCommentsWrapper>
           <LoadMoreButton label="Show more comments" onClick={handleLoadMoreClick} />
         </LoadMoreCommentsWrapper>

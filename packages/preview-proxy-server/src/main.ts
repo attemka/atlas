@@ -1,7 +1,6 @@
 import bodyParser from 'body-parser'
 import express from 'express'
 import fetch, { Headers } from 'node-fetch'
-import * as zlib from 'zlib'
 
 const app = express()
 
@@ -97,7 +96,7 @@ app.all('*', async (req, res) => {
   }
 })
 
-const port = 8080
+const port = 4500
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)

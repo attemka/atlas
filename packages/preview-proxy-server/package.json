@@ -2,7 +2,7 @@
   "name": "preview-proxy-server",
   "packageManager": "yarn@3.2.1",
   "scripts": {
-    "build-ts": "tsc",
+    "build-ts": "tsc -p",
     "dev": "ts-node-dev --respawn src/main.ts",
     "start": "node ./src/main.ts"
   },
