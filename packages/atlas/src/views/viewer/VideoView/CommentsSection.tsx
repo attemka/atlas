@@ -238,25 +238,13 @@ export const CommentsSection: FC<CommentsSectionProps> = ({
         <EmptyFallback title="Be the first to comment" subtitle="Nobody has left a comment under this video yet." />
       )}
       <CommentWrapper ref={commentSectionWrapperRef}>
-        {displayedCommentFromUrl && (
-          <CommentThread
-            commentId={displayedCommentFromUrl.id}
-            video={video}
-            hasAnyReplies={displayedCommentFromUrl.repliesCount > 0}
-            userReactionsLookup={userReactions}
-            highlightedCommentId={highlightedCommentId}
-            setHighlightedCommentId={setHighlightedCommentId}
-            linkedReplyId={parentCommentFromUrl ? commentFromUrl?.id : null}
-            repliesCount={displayedCommentFromUrl.repliesCount}
-          />
-        )}
         {commentsLoading && !isFetchingMore
           ? mappedPlaceholders
           : comments
               ?.map((comment) => (
                 <CommentThread
                   key={comment.id}
-                  commentId={comment.id}
+                  comment={comment}
                   video={video}
                   hasAnyReplies={comment.repliesCount > 0}
                   repliesCount={comment.repliesCount}

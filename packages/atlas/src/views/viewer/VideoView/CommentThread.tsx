@@ -20,7 +20,7 @@ const INITIAL_REPLIES_COUNT = 10
 const LOAD_MORE_REPLIES_COUNT = 20
 
 const _CommentThread: FC<CommentThreadProps> = ({
-  commentId,
+  comment,
   video,
   setHighlightedCommentId,
   highlightedCommentId,
@@ -34,10 +34,10 @@ const _CommentThread: FC<CommentThreadProps> = ({
   const [newReplyId, setNewReplyId] = useState<string | null>(null)
 
   const { replies, totalCount, loading, fetchMore, pageInfo } = useCommentRepliesConnection({
-    skip: !commentId || !video?.id || !repliesOpen || !hasAnyReplies,
+    skip: !comment || !video?.id || !repliesOpen || !hasAnyReplies,
     variables: {
       first: INITIAL_REPLIES_COUNT,
-      parentCommentId: commentId || '',
+      parentCommentId: comment || '',
     },
     notifyOnNetworkStatusChange: true,
   })
@@ -75,22 +75,22 @@ const _CommentThread: FC<CommentThreadProps> = ({
   return (
     <>
       <Comment
-        highlighted={commentId === highlightedCommentId}
-        commentId={commentId}
+        highlighted={false}
+        comment={comment}
         video={video}
         setRepliesOpen={setRepliesOpen}
         isRepliesOpen={repliesOpen}
         setHighlightedCommentId={setHighlightedCommentId}
-        userReactions={userReactionsLookup && commentId ? userReactionsLookup[commentId] : undefined}
+        userReactions={userReactionsLookup && comment.id ? userReactionsLookup[comment.id] : undefined}
         {...commentProps}
         isReplyable={true}
         onReplyPosted={setNewReplyId}
       />
       {linkedReplyId && !repliesOpen && (
         <Comment
-          key={`${commentId}-linked-reply`}
+          key={`${comment.id}-linked-reply`}
           highlighted={linkedReplyId === highlightedCommentId}
-          commentId={linkedReplyId}
+          comment={comment}
           video={video}
           indented
           setHighlightedCommentId={setHighlightedCommentId}
@@ -104,7 +104,7 @@ const _CommentThread: FC<CommentThreadProps> = ({
             <Comment
               key={comment.id}
               highlighted={comment.id === highlightedCommentId}
-              commentId={comment.id}
+              comment={comment}
               video={video}
               indented
               setHighlightedCommentId={setHighlightedCommentId}
@@ -124,22 +124,6 @@ const _CommentThread: FC<CommentThreadProps> = ({
             >
               Load more replies ({repliesLeftToLoadCount})
             </LoadMoreRepliesButton>
-          ) : null}
-          {newReplyId && !allRepliesContainNewReply ? (
-            newReply ? (
-              <Comment
-                key={newReply?.id}
-                highlighted={newReply.id === highlightedCommentId}
-                commentId={newReply.id}
-                video={video}
-                indented
-                setHighlightedCommentId={setHighlightedCommentId}
-                userReactions={userReactionsLookup ? userReactionsLookup[newReply.id] : undefined}
-                isReplyable={false}
-              />
-            ) : (
-              <Comment indented /> // new reply is loading, display an empty skeleton Comment
-            )
           ) : null}
         </>
       )}

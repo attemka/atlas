@@ -1,7 +1,6 @@
 import BN from 'bn.js'
 import { Dispatch, FC, SetStateAction, memo, useCallback, useRef, useState } from 'react'
 
-import { useComment } from '@/api/hooks/comments'
 import { CommentStatus } from '@/api/queries/__generated__/baseTypes.generated'
 import { CommentFieldsFragment, FullVideoFieldsFragment } from '@/api/queries/__generated__/fragments.generated'
 import { DialogModal } from '@/components/_overlays/DialogModal'
@@ -24,7 +23,7 @@ import { CommentInput } from '../CommentInput'
 import { CommentRowProps } from '../CommentRow'
 
 export type CommentProps = {
-  commentId?: string
+  comment?: any
   video?: FullVideoFieldsFragment | null
   userReactions?: number[]
   isReplyable?: boolean
@@ -36,7 +35,7 @@ export type CommentProps = {
 
 export const Comment: FC<CommentProps> = memo(
   ({
-    commentId,
+    comment,
     video,
     userReactions,
     setHighlightedCommentId,
@@ -59,12 +58,6 @@ export const Comment: FC<CommentProps> = memo(
     const [processingReactionsIds, setProcessingReactionsIds] = useState<CommentReaction[]>([])
 
     const { memberId, activeMembership, isLoggedIn, signIn } = useUser()
-    const { comment } = useComment(
-      { commentId: commentId ?? '' },
-      {
-        skip: !commentId,
-      }
-    )
     const { isLoadingAsset: isMemberAvatarLoading, url: memberAvatarUrl } = getMemberAvatar(activeMembership)
 
     const commentIdQueryParam = useRouterQuery(QUERY_PARAMS.COMMENT_ID)
@@ -251,7 +244,7 @@ export const Comment: FC<CommentProps> = memo(
       return
     }, [comment?.isExcluded, comment?.status])
 
-    const loading = !commentId
+    const loading = !comment.id
 
     const commentType = isCommentProcessing
       ? 'processing'
@@ -301,9 +294,9 @@ export const Comment: FC<CommentProps> = memo(
         <>
           <InternalComment
             indented={!!comment?.parentComment?.id}
-            isCommentFromUrl={commentId === commentIdQueryParam}
+            isCommentFromUrl={comment.id === commentIdQueryParam}
             videoId={video?.id}
-            commentId={commentId}
+            commentId={comment.id}
             author={comment?.author}
             onToggleReplies={() => isReplyable && setRepliesOpen?.((value) => !value)}
             repliesOpen={isReplyable && isRepliesOpen}

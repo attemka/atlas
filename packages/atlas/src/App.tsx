@@ -24,7 +24,7 @@ export const App = () => {
     }
 
     try {
-      const endpoint = await innertube.resolveURL(inputValue)
+      const endpoint = inputValue.includes('youtube') ? await innertube.resolveURL(inputValue) : inputValue
       const videoInfo = await innertube.getInfo(endpoint)
       setError('')
       setMetadata(videoInfo)
@@ -46,6 +46,9 @@ export const App = () => {
           url.host = window.location.host
           url.pathname = '/proxy-preview' + url.pathname
           url.protocol = 'https'
+
+          // url.host = 'localhost:4500'
+          // url.protocol = 'http'
 
           const headers = init?.headers
             ? new Headers(init.headers)
@@ -94,7 +97,7 @@ export const App = () => {
             >
               <RowBox>
                 <Text variant="h400" as="h2">
-                  Enter video id in the input below
+                  Enter video id ou YouTube URL in the input below
                 </Text>
                 {error && (
                   <Text variant="h200" as="h3" color="colorTextError">
