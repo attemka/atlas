@@ -17,4 +17,4 @@ services:
   proxy-server:
     image: joystream/proxy-server
     ports:
-      - '4500:8080'
+      - '4500:4500'
