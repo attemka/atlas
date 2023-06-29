@@ -14,3 +14,7 @@ services:
     ports:
       - '4400:80'
     restart: always
+  proxy-server:
+    image: joystream/proxy-server
+    ports:
+      - '4500:8080'

@@ -60,6 +60,11 @@ app.all('*', async (req, res) => {
       body: JSON.stringify(req.body),
     })
 
+    if (!fetchRes.ok) {
+      const message = `An error while fetching YouTube: ${fetchRes.status}`
+      throw new Error(message)
+    }
+
     // Construct the return headers
     const headers = new Headers()
 
@@ -80,19 +85,7 @@ app.all('*', async (req, res) => {
     const processedHeaders = {} as { [key: string]: string }
     Object.keys(rawHeaders).forEach((key) => (processedHeaders[key] = rawHeaders[key][0]))
 
-    // const buffer = Buffer.from(fetchRes.body, 'base64');
-    //
-    // zlib.unzip(buffer, { finishFlush: zlib.constants.Z_SYNC_FLUSH }, (err, buffer) => {
-    //   if (err) {
-    //     console.error('An error occurred:', err);
-    //   }
-    //   console.log(JSON.parse(buffer.toString()));
-    // });
-
     const jsonBody = await fetchRes.json()
-    console.log(jsonBody)
-
-    // console.log(fetchRes.body)
 
     // Return the proxied response
     res.status(fetchRes.status).set(processedHeaders).send(jsonBody)

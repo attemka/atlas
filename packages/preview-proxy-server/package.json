@@ -1,8 +1,8 @@
 {
-  "name": "preview-proxy-server",
+  "name": "@joystream/preview-proxy-server",
   "packageManager": "yarn@3.2.1",
   "scripts": {
-    "build-ts": "tsc -p",
+    "build-ts": "tsc",
     "dev": "ts-node-dev --respawn src/main.ts",
     "start": "node ./src/main.ts"
   },

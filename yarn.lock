@@ -4361,6 +4361,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@joystream/preview-proxy-server@workspace:packages/preview-proxy-server":
+  version: 0.0.0-use.local
+  resolution: "@joystream/preview-proxy-server@workspace:packages/preview-proxy-server"
+  dependencies:
+    "@types/body-parser": ^1
+    "@types/express": ^4.17.14
+    "@types/http-proxy": ^1
+    body-parser: ^1.20.2
+    colors: 1.4.0
+    express: ^4.18.2
+    http-proxy: ^1.18.1
+    ts-node: ^10.9.1
+    ts-node-dev: ^2.0.0
+  languageName: unknown
+  linkType: soft
+
 "@joystream/types@npm:2.1.0, @joystream/types@npm:^2.0.0":
   version: 2.1.0
   resolution: "@joystream/types@npm:2.1.0"
@@ -18126,22 +18142,6 @@ __metadata:
   checksum: d76c4920283b48be91f1d3797a2ce4bd51187d58d2a609ae993c028f73c92d16439449d857af57ccad91ae3a38b30c87307f5589749a056102ebb494c686957e
   languageName: node
   linkType: hard
-
-"preview-proxy-server@workspace:packages/preview-proxy-server":
-  version: 0.0.0-use.local
-  resolution: "preview-proxy-server@workspace:packages/preview-proxy-server"
-  dependencies:
-    "@types/body-parser": ^1
-    "@types/express": ^4.17.14
-    "@types/http-proxy": ^1
-    body-parser: ^1.20.2
-    colors: 1.4.0
-    express: ^4.18.2
-    http-proxy: ^1.18.1
-    ts-node: ^10.9.1
-    ts-node-dev: ^2.0.0
-  languageName: unknown
-  linkType: soft
 
 "process-nextick-args@npm:~2.0.0":
   version: 2.0.1

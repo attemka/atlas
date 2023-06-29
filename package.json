@@ -29,10 +29,12 @@
     "atlas:svgs:icons": "yarn workspace @joystream/atlas svgs:icons",
     "atlas:svgs:logos": "yarn workspace @joystream/atlas svgs:logos",
     "meta-server:build": "yarn workspace @joystream/atlas-meta-server build",
+    "proxy-server:build": "yarn workspace @joystream/preview-proxy-server build-ts",
     "avatar-service:build": "yarn workspace @joystream/atlas-avatar-service build",
     "docker:atlas": "ci/build-docker-atlas.sh",
     "docker:meta-server": "ci/build-docker-meta-server.sh",
     "docker:avatar-service": "ci/build-docker-avatar-service.sh",
+    "docker:preview-server": "ci/build-docker-preview-server.sh",
     "lint-staged": "lint-staged",
     "postinstall": "husky install",
     "atlas:madge:circular": "yarn workspace @joystream/atlas madge:circular"
