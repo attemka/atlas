@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker build -t joystream/preview-server -f packages/preview-proxy-server/Dockerfile .
+docker build -t joystream/proxy-server -f packages/preview-proxy-server/Dockerfile .
