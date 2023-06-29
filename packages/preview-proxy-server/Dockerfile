@@ -7,5 +7,6 @@ COPY . .
 RUN yarn --immutable
 RUN yarn proxy-server:build
 
+
 EXPOSE 8080
-CMD [ "node", "dist/main.js" ]
+CMD [ "node", "./packages/preview-proxy-server/dist/main.js" ]
