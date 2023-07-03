@@ -169,6 +169,7 @@ Once you run the above command, you can use the query above with a `orderBy: cre
 
 #### YouTube Partner Program
 
+
 All the YPP (YouTube Partner Program) parameters could be found in `atlas.config.yml` file located in `packages/atlas` directory.
 `features.ypp` section contains all the necessary params for setting up [youtube-synch](https://github.com/Joystream/youtube-synch/) and customizing user's rewards.
 
