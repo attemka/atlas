@@ -27,8 +27,9 @@ export const useTimeMismatchWarning = () => {
             iconType: 'warning',
           })
           SentryLogger.error(
-            `Time mismatch detected. Server time: ${serverTime}, client time: ${clientTime}`,
-            'UseTimeMismatchWarning'
+            `Time mismatch detected.`,
+            'UseTimeMismatchWarning',
+            `Server time: ${serverTime}, client time: ${clientTime}`
           )
         }
       })
